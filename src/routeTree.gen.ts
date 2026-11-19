@@ -10,42 +10,143 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/team'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AuthenticatedJobsIndexRouteImport } from './routes/_authenticated/jobs.index'
+import { Route as AuthenticatedJobsJobIdRouteImport } from './routes/_authenticated/jobs.$jobId'
+import { Route as AuthenticatedJobsJobIdIndexRouteImport } from './routes/_authenticated/jobs.$jobId.index'
+import { Route as AuthenticatedJobsJobIdChatThreadIdRouteImport } from './routes/_authenticated/jobs.$jobId.chat.$threadId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedTeamRoute = AuthenticatedTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedJobsIndexRoute = AuthenticatedJobsIndexRouteImport.update({
+  id: '/jobs/',
+  path: '/jobs/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedJobsJobIdRoute = AuthenticatedJobsJobIdRouteImport.update({
+  id: '/jobs/$jobId',
+  path: '/jobs/$jobId',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedJobsJobIdIndexRoute =
+  AuthenticatedJobsJobIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedJobsJobIdRoute,
+  } as any)
+const AuthenticatedJobsJobIdChatThreadIdRoute =
+  AuthenticatedJobsJobIdChatThreadIdRouteImport.update({
+    id: '/chat/$threadId',
+    path: '/chat/$threadId',
+    getParentRoute: () => AuthenticatedJobsJobIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/team': typeof AuthenticatedTeamRoute
   '/api/chat': typeof ApiChatRoute
+  '/jobs/$jobId': typeof AuthenticatedJobsJobIdRouteWithChildren
+  '/jobs/': typeof AuthenticatedJobsIndexRoute
+  '/jobs/$jobId/': typeof AuthenticatedJobsJobIdIndexRoute
+  '/jobs/$jobId/chat/$threadId': typeof AuthenticatedJobsJobIdChatThreadIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/team': typeof AuthenticatedTeamRoute
   '/api/chat': typeof ApiChatRoute
+  '/jobs': typeof AuthenticatedJobsIndexRoute
+  '/jobs/$jobId': typeof AuthenticatedJobsJobIdIndexRoute
+  '/jobs/$jobId/chat/$threadId': typeof AuthenticatedJobsJobIdChatThreadIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/team': typeof AuthenticatedTeamRoute
   '/api/chat': typeof ApiChatRoute
+  '/_authenticated/jobs/$jobId': typeof AuthenticatedJobsJobIdRouteWithChildren
+  '/_authenticated/jobs/': typeof AuthenticatedJobsIndexRoute
+  '/_authenticated/jobs/$jobId/': typeof AuthenticatedJobsJobIdIndexRoute
+  '/_authenticated/jobs/$jobId/chat/$threadId': typeof AuthenticatedJobsJobIdChatThreadIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/chat'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/team'
+    | '/api/chat'
+    | '/jobs/$jobId'
+    | '/jobs/'
+    | '/jobs/$jobId/'
+    | '/jobs/$jobId/chat/$threadId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/chat'
-  id: '__root__' | '/' | '/api/chat'
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/team'
+    | '/api/chat'
+    | '/jobs'
+    | '/jobs/$jobId'
+    | '/jobs/$jobId/chat/$threadId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/reset-password'
+    | '/_authenticated/team'
+    | '/api/chat'
+    | '/_authenticated/jobs/$jobId'
+    | '/_authenticated/jobs/'
+    | '/_authenticated/jobs/$jobId/'
+    | '/_authenticated/jobs/$jobId/chat/$threadId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ApiChatRoute: typeof ApiChatRoute
 }
 
@@ -58,6 +159,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/team': {
+      id: '/_authenticated/team'
+      path: '/team'
+      fullPath: '/team'
+      preLoaderRoute: typeof AuthenticatedTeamRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/api/chat': {
       id: '/api/chat'
       path: '/api/chat'
@@ -65,11 +194,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/jobs/': {
+      id: '/_authenticated/jobs/'
+      path: '/jobs'
+      fullPath: '/jobs/'
+      preLoaderRoute: typeof AuthenticatedJobsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/jobs/$jobId': {
+      id: '/_authenticated/jobs/$jobId'
+      path: '/jobs/$jobId'
+      fullPath: '/jobs/$jobId'
+      preLoaderRoute: typeof AuthenticatedJobsJobIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/jobs/$jobId/': {
+      id: '/_authenticated/jobs/$jobId/'
+      path: '/'
+      fullPath: '/jobs/$jobId/'
+      preLoaderRoute: typeof AuthenticatedJobsJobIdIndexRouteImport
+      parentRoute: typeof AuthenticatedJobsJobIdRoute
+    }
+    '/_authenticated/jobs/$jobId/chat/$threadId': {
+      id: '/_authenticated/jobs/$jobId/chat/$threadId'
+      path: '/chat/$threadId'
+      fullPath: '/jobs/$jobId/chat/$threadId'
+      preLoaderRoute: typeof AuthenticatedJobsJobIdChatThreadIdRouteImport
+      parentRoute: typeof AuthenticatedJobsJobIdRoute
+    }
   }
 }
 
+interface AuthenticatedJobsJobIdRouteChildren {
+  AuthenticatedJobsJobIdIndexRoute: typeof AuthenticatedJobsJobIdIndexRoute
+  AuthenticatedJobsJobIdChatThreadIdRoute: typeof AuthenticatedJobsJobIdChatThreadIdRoute
+}
+
+const AuthenticatedJobsJobIdRouteChildren: AuthenticatedJobsJobIdRouteChildren =
+  {
+    AuthenticatedJobsJobIdIndexRoute: AuthenticatedJobsJobIdIndexRoute,
+    AuthenticatedJobsJobIdChatThreadIdRoute:
+      AuthenticatedJobsJobIdChatThreadIdRoute,
+  }
+
+const AuthenticatedJobsJobIdRouteWithChildren =
+  AuthenticatedJobsJobIdRoute._addFileChildren(
+    AuthenticatedJobsJobIdRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedTeamRoute: typeof AuthenticatedTeamRoute
+  AuthenticatedJobsJobIdRoute: typeof AuthenticatedJobsJobIdRouteWithChildren
+  AuthenticatedJobsIndexRoute: typeof AuthenticatedJobsIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedTeamRoute: AuthenticatedTeamRoute,
+  AuthenticatedJobsJobIdRoute: AuthenticatedJobsJobIdRouteWithChildren,
+  AuthenticatedJobsIndexRoute: AuthenticatedJobsIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport

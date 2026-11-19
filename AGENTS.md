@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Team access = any row in `user_roles` (first signup becomes owner; owner adds emails to `team_invites`, triggers grant/revoke `member`). RLS on all app tables uses `is_team_member`; keeps one shared workspace without per-row ownership.
+- CV text is extracted in the browser (unpdf/mammoth), then scored server-side by `analyzeCandidate`; avoids Node-only parsers on the Worker runtime.
+- AI chat streams from `/api/chat` with caller-scoped Supabase client (RLS applies); full UIMessage history is replaced per thread on finish.

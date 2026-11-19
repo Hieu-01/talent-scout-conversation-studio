@@ -91,7 +91,7 @@ export async function handleChat(request: Request) {
         if (Object.keys(patch).length === 0) return { error: "Nothing to update" };
         const { data, error } = await supabase
           .from("candidates")
-          .update(patch)
+          .update(patch as never)
           .eq("job_id", jobId)
           .eq("id", id)
           .select("id, full_name")
