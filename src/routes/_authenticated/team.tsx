@@ -37,9 +37,14 @@ function TeamPage() {
   const { data: profiles = [] } = useQuery({
     queryKey: ["profiles"],
     enabled: !!me?.isOwner,
-    queryFn: async () => (await supabase.from("profiles").select("email")).data ?? [],
+    queryFn: async () => (await supabase.from("profiles").select("email, display_name")).data ?? [],
   });
   const joined = new Set(profiles.map((p) => p.email.toLowerCase()));
+  const namesByEmail = new Map(
+    profiles
+      .filter((p) => p.display_name?.trim())
+      .map((p) => [p.email.toLowerCase(), p.display_name!.trim()]),
+  );
 
   async function invite(e: React.FormEvent) {
     e.preventDefault();
@@ -78,12 +83,20 @@ function TeamPage() {
             </form>
             <div className="mt-6 divide-y divide-border rounded-3xl glass">
               <div className="flex items-center justify-between p-4 text-sm">
-                <span>{me.email}</span>
+                <span>
+                  {me.displayName && <span className="font-medium">{me.displayName} · </span>}
+                  {me.email}
+                </span>
                 <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] text-primary-foreground">Owner</span>
               </div>
               {invites.map((i) => (
                 <div key={i.id} className="flex items-center justify-between p-4 text-sm">
-                  <span>{i.email}</span>
+                  <span>
+                    {namesByEmail.get(i.email.toLowerCase()) && (
+                      <span className="font-medium">{namesByEmail.get(i.email.toLowerCase())} · </span>
+                    )}
+                    {i.email}
+                  </span>
                   <span className="flex items-center gap-3">
                     <span className="text-[11px] text-muted-foreground">{joined.has(i.email.toLowerCase()) ? "Active" : "Not signed up yet"}</span>
                     <Button size="icon-sm" variant="ghost" aria-label="Remove access" onClick={() => revoke(i.id)}><Trash2 /></Button>
