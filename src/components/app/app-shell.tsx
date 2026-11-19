@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { LogOut, ShieldAlert } from "lucide-react";
@@ -6,11 +6,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useMe } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./logo";
+import { NameDialog } from "./name-dialog";
 
 export function AppShell({ children, footer }: { children: ReactNode; footer?: ReactNode }) {
   const { data: me, isLoading } = useMe();
   const qc = useQueryClient();
   const navigate = useNavigate();
+  const [editName, setEditName] = useState(false);
 
   async function signOut() {
     await qc.cancelQueries();
@@ -35,9 +37,14 @@ export function AppShell({ children, footer }: { children: ReactNode; footer?: R
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <span className="hidden items-center gap-2 rounded-full glass px-3 py-1.5 text-xs text-muted-foreground sm:flex">
-            <span className="size-1.5 rounded-full bg-success" /> {me?.email}
-          </span>
+          <button
+            type="button"
+            onClick={() => setEditName(true)}
+            title={me?.email ? `${me.email} · click to change your name` : undefined}
+            className="hidden items-center gap-2 rounded-full glass px-3 py-1.5 text-xs text-muted-foreground transition hover:text-foreground sm:flex"
+          >
+            <span className="size-1.5 rounded-full bg-success" /> {me?.displayName ?? me?.email}
+          </button>
           <Button size="sm" variant="glow" onClick={signOut}>
             <LogOut /> Sign out
           </Button>
@@ -46,6 +53,15 @@ export function AppShell({ children, footer }: { children: ReactNode; footer?: R
       <main className="flex-1">
         {isLoading ? null : me && !me.hasAccess ? <NoAccess email={me.email} /> : children}
       </main>
+      {me && (
+        <NameDialog
+          userId={me.id}
+          required={!me.displayName}
+          open={!me.displayName || editName}
+          initial={me.displayName}
+          onOpenChange={setEditName}
+        />
+      )}
       <footer className="flex items-center justify-between px-6 py-3 text-[11px] text-muted-foreground md:px-8">
         <span>{footer ?? "01 — Lens Studio"}</span>
         <span>Saved automatically</span>

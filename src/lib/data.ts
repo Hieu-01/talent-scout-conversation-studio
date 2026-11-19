@@ -15,8 +15,15 @@ export const meQuery = queryOptions({
     const { data: u } = await supabase.auth.getUser();
     if (!u.user) return null;
     const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", u.user.id);
+    const { data: profile } = await supabase.from("profiles").select("display_name").eq("id", u.user.id).maybeSingle();
     const r = (roles ?? []).map((x) => x.role);
-    return { id: u.user.id, email: u.user.email ?? "", isOwner: r.includes("owner"), hasAccess: r.length > 0 };
+    return {
+      id: u.user.id,
+      email: u.user.email ?? "",
+      displayName: profile?.display_name?.trim() || null,
+      isOwner: r.includes("owner"),
+      hasAccess: r.length > 0,
+    };
   },
 });
 export const useMe = () => useQuery(meQuery);
