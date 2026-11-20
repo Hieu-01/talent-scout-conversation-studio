@@ -38,7 +38,7 @@ export function LoginBackgroundPicker({ custom, dim, onDim, onPick, onReset }: P
         if (problem) return void toast.error(problem);
       }
       await onPick({ blob: file, kind: check.kind, name: file.name });
-      toast.success("Login background updated");
+      toast.success("Background updated");
     } catch {
       toast.error("Couldn't save it on this device — try a smaller file.");
     } finally {
@@ -54,7 +54,7 @@ export function LoginBackgroundPicker({ custom, dim, onDim, onPick, onReset }: P
       <PopoverTrigger asChild>
         <button
           type="button"
-          aria-label="Customize login background"
+          aria-label="Customize background"
           className="group glass-login absolute bottom-5 right-5 z-20 flex h-11 items-center gap-2 rounded-full px-3.5 text-sm font-medium transition hover:scale-105 md:bottom-7 md:right-7"
         >
           <Pencil className="size-4" />
@@ -64,8 +64,8 @@ export function LoginBackgroundPicker({ custom, dim, onDim, onPick, onReset }: P
         </button>
       </PopoverTrigger>
       <PopoverContent side="top" align="end" sideOffset={12} className="glass-strong w-80 rounded-3xl p-5">
-        <h2 className="font-display text-base font-medium">Login background</h2>
-        <p className="mt-1 text-xs text-muted-foreground">Saved on this device only.</p>
+        <h2 className="font-display text-base font-medium">Background</h2>
+        <p className="mt-1 text-xs text-muted-foreground">Shows on the login page and every screen after it. Saved on this device only.</p>
 
         <div className="mt-4 grid grid-cols-2 gap-3">
           <button

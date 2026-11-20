@@ -7,6 +7,7 @@ import { useMe } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./logo";
 import { NameDialog } from "./name-dialog";
+import { AppBackground } from "./app-background";
 
 export function AppShell({ children, footer }: { children: ReactNode; footer?: ReactNode }) {
   const { data: me, isLoading } = useMe();
@@ -25,7 +26,8 @@ export function AppShell({ children, footer }: { children: ReactNode; footer?: R
   const activeCls = "!text-foreground bg-accent";
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="relative isolate flex min-h-screen flex-col">
+      <AppBackground />
       <header className="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-border/50 bg-background/40 px-5 py-3 backdrop-blur-xl md:px-8">
         <div className="flex items-center gap-8">
           <Link to="/jobs"><Logo /></Link>

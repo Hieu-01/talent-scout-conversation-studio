@@ -1,53 +1,20 @@
-import { useEffect, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Link } from "@tanstack/react-router";
 import wave from "@/assets/login-wave.jpg";
 import { Logo } from "./logo";
 import { LoginBackgroundPicker } from "./login-background-picker";
 import {
-  clearBackground,
-  loadBackground,
-  loadDim,
-  saveBackground,
-  saveDim,
-  type StoredBackground,
-} from "@/lib/login-background";
-
-type Custom = { bg: StoredBackground; url: string };
+  pickBackground,
+  resetBackground,
+  setBackgroundDim,
+  useCustomBackground,
+} from "@/lib/use-custom-background";
 
 export function LoginScene({ children }: { children: ReactNode }) {
   const reduceMotion = useReducedMotion();
-  const [custom, setCustom] = useState<Custom | null>(null);
-  const [dim, setDim] = useState(0.25);
-
-  // The chosen background is stored in this browser; read it after hydration.
-  useEffect(() => {
-    setDim(loadDim());
-    let cancelled = false;
-    loadBackground().then((bg) => {
-      if (bg && !cancelled) setCustom({ bg, url: URL.createObjectURL(bg.blob) });
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  useEffect(() => () => {
-    if (custom) URL.revokeObjectURL(custom.url);
-  }, [custom]);
-
-  async function pick(bg: StoredBackground) {
-    await saveBackground(bg);
-    setCustom({ bg, url: URL.createObjectURL(bg.blob) });
-  }
-  async function reset() {
-    await clearBackground().catch(() => {});
-    setCustom(null);
-  }
-  function changeDim(n: number) {
-    setDim(n);
-    saveDim(n);
-  }
+  const { custom, dim } = useCustomBackground();
+  const reset = resetBackground;
 
   return (
     <div className="min-h-screen bg-background p-3 md:p-6">
@@ -114,7 +81,7 @@ export function LoginScene({ children }: { children: ReactNode }) {
             {children}
           </motion.div>
         </div>
-        <LoginBackgroundPicker custom={custom} dim={dim} onDim={changeDim} onPick={pick} onReset={reset} />
+        <LoginBackgroundPicker custom={custom} dim={dim} onDim={setBackgroundDim} onPick={pickBackground} onReset={resetBackground} />
       </div>
     </div>
   );
