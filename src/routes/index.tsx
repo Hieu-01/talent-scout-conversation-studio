@@ -41,7 +41,7 @@ function Landing() {
               Ready to get<br />your work<br /><span className="text-gradient">done?</span>
             </h1>
             <p className="mt-5 max-w-md text-sm text-muted-foreground">
-              Lens starts with your CVs — read, ranked, remembered — then grows into the place where you set up tasks, hand them to the AI, and let them run themselves.
+              Dude what else u want me to say? Let just go ahead and automate ur boring, repetitive task bruh (Am done promotin')
             </p>
             <div className="mt-8 flex gap-3">
               <Button asChild variant="pill"><Link to="/jobs">Open studio <ArrowRight /></Link></Button>
