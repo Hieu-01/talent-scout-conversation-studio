@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { ArrowRight, FileStack, Gauge, MessageSquareText, Users } from "lucide-react";
+import { ArrowRight, FileStack, MessageSquareText, Users, Workflow } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/app/logo";
 import stack from "@/assets/cv-stack.jpg";
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
 
 const features = [
   { icon: FileStack, title: "Bulk upload", lines: ["PDF & Word", "Dozens at once", "Text extracted instantly"] },
-  { icon: Gauge, title: "Fit scoring", lines: ["Job description match", "Must-have criteria", "Per-criterion reasons"] },
+  { icon: Workflow, title: "Task automation", lines: ["Set up a task once", "Lens runs it for you", "You approve the result"] },
   { icon: MessageSquareText, title: "AI copilot", lines: ["Ask anything", "Edit by command", "Delete with confirm"] },
   { icon: Users, title: "Team access", lines: ["Invite by email", "Shared pipeline", "Saved forever"] },
 ];
@@ -38,10 +38,10 @@ function Landing() {
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
             <span className="rounded-full bg-primary px-2.5 py-1 text-[11px] font-medium text-primary-foreground">AI recruiting studio</span>
             <h1 className="mt-5 text-5xl font-light leading-[1.05] md:text-6xl">
-              Every CV.<br />Read, ranked,<br /><span className="text-gradient">remembered.</span>
+              Ready to get<br />your work<br /><span className="text-gradient">done?</span>
             </h1>
             <p className="mt-5 max-w-md text-sm text-muted-foreground">
-              Drop in a stack of CVs, tell Lens what the role needs, and get a ranked shortlist with reasons — then talk to your pipeline like a teammate.
+              Lens starts with your CVs — read, ranked, remembered — then grows into the place where you set up tasks, hand them to the AI, and let them run themselves.
             </p>
             <div className="mt-8 flex gap-3">
               <Button asChild variant="pill"><Link to="/jobs">Open studio <ArrowRight /></Link></Button>
