@@ -92,7 +92,9 @@ export function clearBackground() {
 }
 
 export function loadDim(): number {
-  const n = Number(localStorage.getItem(DIM_KEY));
+  const raw = localStorage.getItem(DIM_KEY);
+  if (raw === null) return 0.25;
+  const n = Number(raw);
   return Number.isFinite(n) && n >= 0 && n <= 0.8 ? n : 0.25;
 }
 

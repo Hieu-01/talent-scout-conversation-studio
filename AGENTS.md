@@ -33,3 +33,4 @@ use the editor.
 - Team access = any row in `user_roles` (first signup becomes owner; owner adds emails to `team_invites`, triggers grant/revoke `member`). RLS on all app tables uses `is_team_member`; keeps one shared workspace without per-row ownership.
 - CV text is extracted in the browser (unpdf/mammoth), then scored server-side by `analyzeCandidate`; avoids Node-only parsers on the Worker runtime.
 - AI chat streams from `/api/chat` with caller-scoped Supabase client (RLS applies); full UIMessage history is replaced per thread on finish.
+- Login background personalization is stored only in the browser (IndexedDB for the file, localStorage for darkness), never uploaded; the login screen runs before sign-in.
